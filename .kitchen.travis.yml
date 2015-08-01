@@ -12,7 +12,7 @@ provisioner:
 platforms:
     - name                      : travis
       provisioner               :
-        raw_arguments           : "-c local --ask-sudo-pass"
+        raw_arguments           : "-c local"
         extra_vars              : 
           xxxxx               : "hxx"
 
