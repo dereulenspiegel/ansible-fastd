@@ -1,0 +1,23 @@
+---
+driver                 :
+    name               : localhost
+
+provisioner:
+    name               : ansible_push
+    verbose            : "vvvv"
+    ansible_config     : "test/ansible.cfg"
+    idempotency_test   : True
+
+
+platforms:
+    - name                      : travis
+      provisioner               :
+        raw_arguments           : "-c local --ask-sudo-pass"
+        extra_vars              : 
+          xxxxx               : "hxx"
+
+suites:
+  - name            : fastd
+    provisioner     :
+        playbook    : "test/application/fastd.yml"
+        extra_vars  : { 'kitchen_connection': 'smart' }
