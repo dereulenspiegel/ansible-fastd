@@ -1,0 +1,37 @@
+---
+# tasks file for fastd
+
+- include: repo.yml
+
+- include: libsodium/main.yml
+
+- include: libuecc/main.yml
+
+- include: debian.yml
+  when: ansible_distribution == "Ubuntu"
+
+- include: debian.yml
+  when: ansible_distribution == "Debian"
+
+- name: Create fastd config directories
+  file: path=/etc/fastd/{{item.name}}/dummy state=directory recurse=yes
+  with_items:
+    - "{{fastd_instances}}"
+
+- name: Create fastd configs
+  template: src=fastd.conf.j2 dest=/etc/fastd/{{item.name}}/fastd.conf
+  with_items:
+    - "{{fastd_instances}}"
+  notify: Restart fastd
+
+- name: Create fastd secrets
+  template: src=secret.conf.j2 dest=/etc/fastd/{{item.name}}/secret.conf
+  with_items:
+    - "{{fastd_instances_secret}}"
+  notify: Restart fastd
+
+- name: rng-tools need to run
+  service: name=rng-tools state=started enabled=yes pattern=/usr/sbin/rngd
+
+- name: fastd needs to autostart
+  service: name=fastd enabled=yes state=started
