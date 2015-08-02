@@ -6,15 +6,13 @@ provisioner:
     name               : ansible_push
     verbose            : "vvvv"
     ansible_config     : "test/ansible.cfg"
-    idempotency_test   : True
+    idempotency_test   : False
 
 
 platforms:
     - name                      : travis
       provisioner               :
         raw_arguments           : "-c local"
-        extra_vars              : 
-          xxxxx               : "hxx"
 
 suites:
   - name            : fastd
