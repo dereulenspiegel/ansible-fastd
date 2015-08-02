@@ -34,3 +34,7 @@
 - name: Add Universe Factory Apt Repository 
   when: repo_universe_factory_available
   apt_repository: repo='deb http://repo.universe-factory.net/debian/ sid main' state=present update_cache=yes
+
+- name: Add Ubuntu backports to older Ubuntu distribition
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int < 14
+  apt_repo: apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse' state=present update_cache=yes
