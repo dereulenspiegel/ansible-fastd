@@ -7,13 +7,13 @@ include "secret.conf";
 include peers from "dummy";
 interface "{{item.interface}}";
 log level {{item.loglevel}};
+log to syslog level verbose;
 mode {{item.mode}};
 method "{{item.method}}";
 peer limit {{item.peer_limit}};
 hide ip addresses yes;
 mtu {{item.mtu}};
 secure handshakes yes;
-log to syslog level verbose;
 status socket "{{item.status_socket}}";
 user "{{fastd_user_name}}";
 

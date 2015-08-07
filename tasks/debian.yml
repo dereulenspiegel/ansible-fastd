@@ -13,9 +13,11 @@
     - build-essential
 
 - name: Install rng-tools
+  when: fastd_use_rng
   apt: name=rng-tools state=present
 
 - name: Make sure that rng-tools uses /dev/urandom
+  when: fastd_use_rng
   lineinfile:
     dest: /etc/default/rng-tools
     line: HRNGDEVICE=/dev/urandom

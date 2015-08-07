@@ -31,6 +31,7 @@
   notify: Restart fastd
 
 - name: rng-tools need to run
+  when: fastd_use_rng
   service: name=rng-tools state=started enabled=yes pattern=/usr/sbin/rngd
 
 - name: fastd needs to autostart
