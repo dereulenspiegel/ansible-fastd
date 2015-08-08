@@ -4,7 +4,6 @@
 
 bind {{item.bind}};
 include "secret.conf";
-include peers from "dummy";
 interface "{{item.interface}}";
 log level {{item.loglevel|default('warn')}};
 {% if item.syslog_level is defined %}
@@ -30,23 +29,26 @@ include {{include}};
 {% endfor %}
 {% endif %}
 {% if item.peer_includes is defined %}
-{% for include in item.peer_includes %}
+{% for include in item.peers %}
+{% if include.file is defined %}
 include peer "{{include.file}}" {% if include.name is defined %}[ as "{{include.name}}" ]{% endif %};
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if item.peer_dir is defined %}
 include peers from "{{item.peer_dir}}";
 {% endif %}
-
 {% if item.mac is defined %}
 mac "{{item.mac.name}}" use "{{item.mac.implementation}}";
+{% endif %}
+{% if item.packet_mark is defined %}
+packet mark {{item.packet_mark}};
 {% endif %}
 {% if item.on_pre_up_script is defined %}
 on pre-up "
   {{item.on_pre_up_script}}
 ";
 {% endif %}
-
 {% if item.on_up_script is defined %}
 on up "
   {{item.on_up_script}}
@@ -82,4 +84,20 @@ on establish "
 on disestablish "
   {{item.on_disestablish_script}}
 ";
+{% endif %}
+
+{% if item.peers is defined and item.peer_dir is not defined %}
+{% for peer in item.peers %}
+peer "{{peer.name}}" {
+  
+};
+{% endfor %}
+{% endif %}
+
+{% if item.peer_groups is defined %}
+{% for peer_group in item.peer_groups %}
+peer group "{{peer_group-name}}" {
+  
+};
+{% endfor %}
 {% endif %}

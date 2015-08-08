@@ -15,6 +15,15 @@ describe file('/etc/fastd/test2') do
   it { should be_directory }
 end
 
+describe file('/etc/fastd/test2/peers') do
+  it { should be_directory}
+end
+
+describe file('/etc/fastd/test2/peers/test-peer') do
+  it { should be_file }
+  it { should be_readable }
+end
+
 describe package('fastd') do
   it { should be_installed }
 end
